@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+        
+        <script>
+               class employee{
+
+                work(){
+
+                    document.write("working....");
+                }
+
+                getSalary(){
+                    document.write("50000/-");
+                }
+               }
+
+               class HRmanage extends employee{
+
+                    work1(){
+                        // super.work();
+                        // super.getSalary();
+                        document.write(" hr working...");
+                    }
+
+                    addEmp(name){
+                        document.write(name +" added...");
+                    }
+
+
+               }
+
+               const hr = new HRmanage();
+               hr.work1();
+               hr.work();
+               hr.getSalary();
+               hr.addEmp("vaibhu");
+
+        </script>
+    
+    
+</body>
+</html>

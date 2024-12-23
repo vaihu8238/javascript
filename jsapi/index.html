@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            rel="stylesheet">
+
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+            integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <!-- Favicon -->
+        <link rel="icon" href="img/core-img/favicon.ico">
+
+        <!-- Core Stylesheet -->
+        <link href="style.css" rel="stylesheet">
+
+        <!-- Responsive CSS -->
+        <link href="css/responsive/responsive.css" rel="stylesheet">
+
+        <style>
+        header{
+            background: #1e1d1d;
+        }
+        #cardContainer{
+            margin-top: 5%;
+        }
+        .h2{
+            text-align: center;
+            margin-top: 5%;
+            
+        }
+
+    </style>
+
+    </head>
+    <body>
+
+        <!-- ***** Header Area Start ***** -->
+        <header class="header_area" id="header">
+            <div class="container h-100">
+                <div class="row h-100">
+                    <div class="col-12 h-100">
+                        <nav
+                            class="h-100 navbar navbar-expand-lg align-items-center">
+                            <a class="navbar-brand"
+                                href="index.html">MY-CAFE</a>
+                            <button class="navbar-toggler" type="button"
+                                data-toggle="collapse" data-target="#caviarNav"
+                                aria-controls="caviarNav" aria-expanded="false"
+                                aria-label="Toggle navigation"><span
+                                    class="fa fa-bars"></span></button>
+                            <div class="collapse navbar-collapse"
+                                id="caviarNav">
+                                <ul class="navbar-nav ml-auto" id="caviarMenu">
+                                    <li class="nav-item active">
+                                        <a class="nav-link"
+                                            href="home.html">Home <span
+                                                class="sr-only">(current)</span></a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link"
+                                            href="menu.html">Menu</a>
+                                    </li>
+                                </ul>
+                                <!-- Search Btn -->
+                                <div class="caviar-search-btn">
+                                    <a id="search-btn" href="#"><i
+                                            class="fa fa-search"
+                                            aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- ***** Header Area End ***** -->
+
+        <!-- form -->
+
+        <div class="container">
+            <h2>Post Data Form</h2>
+            <form id="myform" onsubmit="datapost()" style="margin-top: 12%;">
+
+                <input type="hidden" id="eid" class="form-control">
+
+                <div class="form-group">
+                    <label for="title">Enter Name:</label>
+                    <input type="text" class="form-control" id="name"
+                        placeholder="Enter Name">
+                </div>
+                <div class="form-group">
+                    <label for="price">Enter Price:</label>
+                    <input type="text" class="form-control" id="price"
+                        placeholder="Enter Price">
+                </div>
+                <div class="form-group">
+                    <label for="description">Enter Description:</label>
+                    <input type="text" class="form-control" id="description"
+                        placeholder="Enter Description">
+                </div>
+                <div class="form-group">
+                    <label for="category">Select Category:</label>
+                    <select class="form-control" id="category">
+                        <option value="Pizza">Pizza</option>
+                        <option value="Cofee">Cofee</option>
+                        <option value="Sandwitch">Sandwitch</option>
+                        <option value="chinese-food">chinese-food</option>
+                        <option value="paninis">paninis</option>
+                        <option value="pastrys">pastrys</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="image">Enter Image URL:</label>
+                    <input type="text" class="form-control" id="image"
+                        placeholder="Enter Image URL">
+                </div>
+                <button type="submit" class="btn btn-primary">Post Data</button>
+            </form>
+
+            <!-- card -->
+            <h2 class="h2">food-data</h2>
+            <div id="cardContainer" class="row">
+
+            </div>
+        </div>
+
+        <script>
+            let api="https://67279b55270bd0b97553104b.mockapi.io/myapi";
+
+            function datafetch() {
+                
+                fetch(api)
+                .then(response => response.json())
+                .then(data => {
+                
+                    let v = document.querySelector('#cardContainer')
+                    v.innerHTML='';
+                  const cards=data.map(x =>
+
+                        `<div class="col-md-3 col-mb-3 m-4">
+
+                           <div class="card">
+
+                             <img src="${x.image}" class="card-img-top" alt="${x.name}">
+                              <div class="card-body">
+                                    <h5 class="card-name">${x.name}</h5>
+                                    <p class="card-category"><strong>category: </strong>${x.category}</p>
+                                    <p class="card-text"><strong>Price: </strong>${x.price}</p>
+                                    <p class="card-text"><strong>description: </strong>${x.description}</p>
+                                    <button class="btn btn-danger" onclick="detadelete(${x.id})"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                    <button class="btn btn-warning" onclick="dataedit(${x.id})"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                              </div>
+
+                           </div>
+
+                            
+                        </div>`
+                    ).join('');
+
+                
+                const container = document.getElementById('cardContainer');
+                container.innerHTML = cards;
+                    
+                })
+                .catch(error => console.log(error));
+            }
+            datafetch()
+
+
+        //POST
+            function datapost() {
+            event.preventDefault();
+
+            let id= document.getElementById("eid").value
+            let mydata = {
+                name: document.getElementById("name").value,
+                price: document.getElementById("price").value,
+                description: document.getElementById("description").value,
+                category: document.getElementById("category").value,
+                image: document.getElementById("image").value
+            };
+
+            // console.log(mydata);
+
+            if(id){ // Editing an existing item
+            
+            fetch(`${api}/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json" 
+            },
+            body: JSON.stringify(mydata)
+        })
+        .then(response => response.json())
+        .then(() => {
+            datafetch(); // Refresh the data
+            document.getElementById("myform").reset(); // Reset form fields
+        })
+        .catch(error => console.log(error));
+
+    } else { // Adding a new item
+        fetch(api, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(mydata)
+        })
+        .then(response => response.json())
+        .then(() => {
+            datafetch(); // Refresh the data
+            document.getElementById("myform").reset(); // Reset form fields
+        })
+        .catch(error => console.error('There was a problem with the fetch operation:', error));
+    }
+}
+
+        // delete
+        function detadelete(id){
+            fetch(`${api}/${id}`,{
+                method:"DELETE",
+                headers:
+                {
+                    "Contant-Type":"application/Json"
+                },
+            })
+
+            .then(()=>{
+                datafetch();
+            })
+
+            .catch(error=>console.log(error))
+        }
+
+        // fetch edit form column data
+
+        function dataedit(id) {
+            fetch(`${api}/${id}`)
+            .then(response => response.json()) 
+            .then(data => {
+                document.getElementById("eid").value = data.id;
+                document.getElementById("name").value = data.name;
+                document.getElementById("price").value = data.price;
+                document.getElementById("description").value = data.description;
+                document.getElementById("category").value = data.category;
+                document.getElementById("image").value = data.image;
+            })
+            .catch(error => console.log(error));
+        }
+
+        </script>
+        <!-- ****** Footer Area Start ****** -->
+        <footer class="caviar-footer-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="footer-text">
+                            <a href="#" class="navbar-brand">My cafe</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            <p>Copyright
+                                &copy;<script>document.write(new Date().getFullYear());</script>
+                                All rights reserved | This template is made with
+                                <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                by <a href="https://colorlib.com"
+                                    target="_blank">MY-CAFE</a></p>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- ****** Footer Area End ****** -->
+    </body>
+
+</html>

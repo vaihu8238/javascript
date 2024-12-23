@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h2>Registration Form</h2>
+    <form id="registrationForm">
+        <label for="name">Name: </label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="mobile">Mobile: </label>
+        <input type="text" id="mobile" name="mobile" required maxlength="10"><br><br>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <script>
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent form submission
+    clearErrors(); // Clear existing error messages
+
+    let isValid = true;
+
+    // Validate required fields
+    const fields = ['name', 'email', 'mobile'];
+    fields.forEach(field => {
+        const input = document.getElementById(field);
+        if (!input.value) {
+            createErrorMessage(input, 'This field is required.');
+            isValid = false;
+        }
+    });
+
+    if (isValid) {
+        // Form is valid, proceed with form submission or further processing
+        alert('Form submitted successfully!');
+    }
+});
+
+// Function to create error messages
+function createErrorMessage(input, message) {
+    const error = document.createElement('div');
+    error.className = 'error';
+    error.textContent = message;
+    input.parentNode.insertBefore(error, input.nextSibling);
+}
+
+// Function to clear existing error messages
+function clearErrors() {
+    const errors = document.querySelectorAll('.error');
+    errors.forEach(error => error.remove());
+}
+
+// Restrict mobile input to numbers only
+document.getElementById('mobile').addEventListener('input', function(event) {
+    this.value = this.value.replace(/[^0-9]/g, ''); // Allow only numeric input
+});
+
+
+    </script>
+</body>
+</html>
